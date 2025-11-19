@@ -1,0 +1,36 @@
+# Hackathon-ready requirements with compatible versions
+# Core Framework
+langchain
+langgraph
+litellm
+
+# LLM APIs
+openai
+anthropic
+
+# Web Scraping
+beautifulsoup4
+requests
+duckduckgo-search
+
+# FastAPI Backend
+fastapi
+uvicorn[standard]
+pydantic
+pydantic_settings
+
+# Streamlit UI
+streamlit
+
+# Email
+aiosmtplib
+email-validator
+
+# Data Processing
+pandas
+numpy
+
+# Utilities
+python-dotenv
+httpx
+aiohttp

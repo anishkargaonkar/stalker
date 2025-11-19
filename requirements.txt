@@ -1,0 +1,68 @@
+# Core Framework - Top OSS from PDF
+langchain
+langgraph
+langsmith
+
+# LLM APIs
+openai==1.12.0
+anthropic==0.18.1
+litellm==1.30.0  # Multi-LLM support
+
+# Top-rated Web Scraping OSS
+firecrawl-py==0.0.11
+playwright==1.41.0
+beautifulsoup4==4.12.3
+newspaper3k==0.2.8
+trafilatura==1.6.3
+scrapy==2.11.0
+
+# Search & Research Tools
+duckduckgo-search==4.4.0
+googlesearch-python==1.2.3
+arxiv==2.1.0
+
+# FastAPI Backend
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+python-multipart==0.0.6
+
+# Streamlit UI
+streamlit==1.31.0
+plotly==5.18.0
+
+# Database & Caching
+sqlalchemy==2.0.25
+chromadb==0.4.22
+redis==5.0.1
+sqlite-utils==3.35.2
+
+# Email & Communication
+python-dotenv==1.0.0
+sendgrid==6.11.0
+aiosmtplib==3.0.1
+email-validator==2.1.0
+
+# Data Processing
+pandas==2.1.4
+numpy==1.26.3
+scikit-learn==1.4.0
+
+# NLP & Analysis
+spacy==3.7.2
+textblob==0.17.1
+yake==0.4.8  # Keyword extraction
+
+# Utilities
+httpx==0.26.0
+aiohttp==3.9.1
+tenacity==8.2.3  # Retry logic
+apscheduler==3.10.4  # Scheduling
+tqdm==4.66.1  # Progress bars
+python-jose[cryptography]==3.3.0  # JWT tokens
+pyyaml==6.0.1
+
+# Development
+pytest==8.0.0
+black==24.1.1
+ruff==0.1.14

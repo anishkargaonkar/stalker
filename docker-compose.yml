@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  stalker-engine:
+    build: .
+    container_name: stalker-engine
+    ports:
+      - "8000:8000"  # FastAPI
+      - "8501:8501"  # Streamlit
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GROQ_API_KEY=${GROQ_API_KEY}
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - DATABASE_URL=sqlite:///./stalker.db
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./.env:/app/.env
+    depends_on:
+      - redis
+    restart: unless-stopped
+    networks:
+      - stalker-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: stalker-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - stalker-network
+    restart: unless-stopped
+
+  # Optional: PostgreSQL for production
+  # postgres:
+  #   image: postgres:15-alpine
+  #   container_name: stalker-postgres
+  #   environment:
+  #     - POSTGRES_USER=stalker
+  #     - POSTGRES_PASSWORD=stalker_secret
+  #     - POSTGRES_DB=stalker_db
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - stalker-network
+  #   restart: unless-stopped
+
+volumes:
+  redis-data:
+  # postgres-data:
+
+networks:
+  stalker-network:
+    driver: bridge

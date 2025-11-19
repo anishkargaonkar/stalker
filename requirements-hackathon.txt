@@ -25,6 +25,7 @@ streamlit
 # Email
 aiosmtplib
 email-validator
+boto3  # For Amazon SES
 
 # Data Processing
 pandas

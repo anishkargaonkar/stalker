@@ -44,12 +44,23 @@ class Settings(BaseSettings):
     cache_ttl: int = 3600  # 1 hour
 
     # Email Configuration
-    email_provider: str = "smtp"  # smtp or sendgrid
+    email_provider: str = "smtp"  # smtp, sendgrid, or ses
+
+    # SendGrid Configuration
     sendgrid_api_key: Optional[str] = None
+
+    # Amazon SES Configuration
+    aws_region: str = "us-east-1"
+    aws_access_key_id: Optional[str] = None
+    aws_secret_access_key: Optional[str] = None
+
+    # SMTP Configuration
     smtp_host: Optional[str] = "smtp.gmail.com"
     smtp_port: int = 587
     smtp_user: Optional[str] = None
     smtp_password: Optional[str] = None
+
+    # Common Email Settings
     from_email: str = "noreply@stalker-engine.com"
 
     # Scraping Configuration

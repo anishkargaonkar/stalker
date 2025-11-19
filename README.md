@@ -1,7 +1,7 @@
-# <¯ Stalker Engine - AI-Powered Sales Intelligence & Outreach
+# <ï¿½ Stalker Engine - AI-Powered Sales Intelligence & Outreach
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![LangChain](https://img.shields.io/badge/LangChain->œ-green.svg)](https://langchain.com/)
+[![LangChain](https://img.shields.io/badge/LangChain->ï¿½-green.svg)](https://langchain.com/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -10,7 +10,7 @@
 
 Built for a hackathon with focus on **fast execution** and **accurate results** using **100% open-source tools**.
 
-## =€ Features
+## =ï¿½ Features
 
 ### = Intelligent Research
 - **Multi-source company intelligence** gathering from web, news, social media
@@ -22,25 +22,25 @@ Built for a hackathon with focus on **fast execution** and **accurate results** 
 ### 	 Hyper-Personalized Outreach
 - **Context-aware message generation** using LLMs (GPT-4, Claude, Groq)
 - **Multi-channel support** (Email, LinkedIn, SMS, Call Scripts)
-- **Sales stage optimization** (Introduction ’ Qualification ’ Closing)
+- **Sales stage optimization** (Introduction ï¿½ Qualification ï¿½ Closing)
 - **A/B testing** with multiple message variations
 - **Automated follow-up sequences**
 
-### <¯ Campaign Management
+### <ï¿½ Campaign Management
 - **LangGraph orchestration** for complex workflows
 - **Parallel processing** of hundreds of leads
 - **Smart scheduling** with rate limiting
 - **Quality assurance** with AI review
 - **Real-time campaign monitoring**
 
-### =Ê Analytics & Tracking
+### =ï¿½ Analytics & Tracking
 - **Comprehensive metrics dashboard**
 - **Email performance tracking** (open, click, reply rates)
 - **Lead scoring** and qualification
 - **ROI measurement** and reporting
 - **Export capabilities** for further analysis
 
-## <× Architecture
+## <ï¿½ Architecture
 
 Built on top of proven open-source projects:
 
@@ -49,7 +49,7 @@ Built on top of proven open-source projects:
 - **[AI Company Researcher](https://github.com/mayooear/ai-company-researcher)** - Automated company profiling
 - **[GPT-Researcher](https://github.com/assafelovic/gpt-researcher)** - Deep research capabilities
 
-## ¡ Quick Start (Hackathon Speed!)
+## ï¿½ Quick Start (Hackathon Speed!)
 
 ### Prerequisites
 
@@ -93,10 +93,23 @@ ANTHROPIC_API_KEY=sk-ant-...  # or
 GROQ_API_KEY=gsk_...  # Free tier available!
 
 # Email (optional, will mock if not configured)
-SENDGRID_API_KEY=SG...  # or configure SMTP
+# Option 1: Amazon SES (recommended for AWS users)
+EMAIL_PROVIDER=ses
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=AKIA...
+AWS_SECRET_ACCESS_KEY=...
+FROM_EMAIL=your-verified@example.com
+
+# Option 2: SendGrid
+# EMAIL_PROVIDER=sendgrid
+# SENDGRID_API_KEY=SG...
+
+# Option 3: SMTP
+# EMAIL_PROVIDER=smtp
+# SMTP configurations...
 ```
 
-### 3. Launch the Engine! =€
+### 3. Launch the Engine! =ï¿½
 
 ```bash
 # Start both API and UI
@@ -104,11 +117,11 @@ python main.py
 ```
 
 This launches:
-- =á **API Server**: http://localhost:8000
-- =Ú **API Docs**: http://localhost:8000/docs
-- <¨ **UI Dashboard**: http://localhost:8501
+- =ï¿½ **API Server**: http://localhost:8000
+- =ï¿½ **API Docs**: http://localhost:8000/docs
+- <ï¿½ **UI Dashboard**: http://localhost:8501
 
-## <® Usage Guide
+## <ï¿½ Usage Guide
 
 ### Step 1: Import Leads
 1. Navigate to **Lead Import** in the UI
@@ -135,7 +148,7 @@ This launches:
 4. Click "Launch Campaign"
 5. Monitor progress in real-time
 
-## =à API Usage
+## =ï¿½ API Usage
 
 The FastAPI backend provides full programmatic access:
 
@@ -186,7 +199,7 @@ docker-compose logs -f
 docker-compose down
 ```
 
-## =Ê Performance Metrics
+## =ï¿½ Performance Metrics
 
 Based on testing with real data:
 
@@ -195,7 +208,7 @@ Based on testing with real data:
 - **Personalization Accuracy**: 85-95% relevance
 - **Campaign Processing**: 100 leads in 5 minutes
 
-## <Æ Hackathon Optimizations
+## <ï¿½ Hackathon Optimizations
 
 ### For Speed:
 1. Use **Groq** (free, fast) instead of OpenAI
@@ -207,7 +220,7 @@ Based on testing with real data:
 2. Set `personalization_level: "high"`
 3. Enable `deep_research: true`
 
-## =Ä License
+## =ï¿½ License
 
 This project is licensed under the MIT License.
 

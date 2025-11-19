@@ -18,6 +18,13 @@ try:
 except ImportError:
     SENDGRID_AVAILABLE = False
 
+try:
+    import boto3
+    from botocore.exceptions import BotoCoreError, ClientError
+    SES_AVAILABLE = True
+except ImportError:
+    SES_AVAILABLE = False
+
 import aiosmtplib
 from email_validator import validate_email, EmailNotValidError
 
@@ -51,6 +58,14 @@ class EmailSender:
         # Initialize provider
         if self.provider == "sendgrid" and SENDGRID_AVAILABLE:
             self.sg_client = sendgrid.SendGridAPIClient(api_key=settings.sendgrid_api_key)
+        elif self.provider == "ses" and SES_AVAILABLE:
+            # Initialize Amazon SES client
+            self.ses_client = boto3.client(
+                'ses',
+                region_name=getattr(settings, 'aws_region', 'us-east-1'),
+                aws_access_key_id=getattr(settings, 'aws_access_key_id', None),
+                aws_secret_access_key=getattr(settings, 'aws_secret_access_key', None)
+            )
         elif self.provider == "smtp":
             self.smtp_config = {
                 "hostname": settings.smtp_host,
@@ -88,6 +103,11 @@ class EmailSender:
             return await self._send_via_sendgrid(
                 to_email, subject, body, html_body,
                 from_name, reply_to, cc, bcc, attachments
+            )
+        elif self.provider == "ses" and SES_AVAILABLE:
+            return await self._send_via_ses(
+                to_email, subject, body, html_body,
+                from_name, reply_to, cc, bcc
             )
         elif self.provider == "smtp":
             return await self._send_via_smtp(
@@ -150,6 +170,74 @@ class EmailSender:
 
         except Exception as e:
             logger.error(f"SendGrid send failed: {e}")
+            return EmailDeliveryResult(success=False, error=str(e))
+
+    async def _send_via_ses(
+        self,
+        to_email: str,
+        subject: str,
+        body: str,
+        html_body: Optional[str] = None,
+        from_name: Optional[str] = None,
+        reply_to: Optional[str] = None,
+        cc: Optional[List[str]] = None,
+        bcc: Optional[List[str]] = None
+    ) -> EmailDeliveryResult:
+        """Send email via Amazon SES"""
+
+        try:
+            # Prepare email
+            destination = {'ToAddresses': [to_email]}
+            if cc:
+                destination['CcAddresses'] = cc
+            if bcc:
+                destination['BccAddresses'] = bcc
+
+            # Email content
+            message = {
+                'Subject': {'Data': subject},
+                'Body': {}
+            }
+
+            if body:
+                message['Body']['Text'] = {'Data': body}
+            if html_body:
+                message['Body']['Html'] = {'Data': html_body}
+
+            # From address
+            from_address = self.from_email
+            if from_name:
+                from_address = f"{from_name} <{self.from_email}>"
+
+            # Send email
+            kwargs = {
+                'Source': from_address,
+                'Destination': destination,
+                'Message': message
+            }
+
+            if reply_to:
+                kwargs['ReplyToAddresses'] = [reply_to]
+
+            # Use asyncio to run the synchronous boto3 call
+            loop = asyncio.get_event_loop()
+            response = await loop.run_in_executor(
+                None,
+                lambda: self.ses_client.send_email(**kwargs)
+            )
+
+            return EmailDeliveryResult(
+                success=True,
+                message_id=response['MessageId']
+            )
+
+        except ClientError as e:
+            error_code = e.response['Error']['Code']
+            error_message = e.response['Error']['Message']
+            logger.error(f"SES send failed: {error_code} - {error_message}")
+            return EmailDeliveryResult(success=False, error=f"{error_code}: {error_message}")
+        except Exception as e:
+            logger.error(f"SES send failed: {e}")
             return EmailDeliveryResult(success=False, error=str(e))
 
     async def _send_via_smtp(
@@ -287,6 +375,20 @@ class EmailSender:
                 # Test SendGrid API key
                 response = self.sg_client.client.api_keys._(settings.sendgrid_api_key).get()
                 return response.status_code == 200
+
+            elif self.provider == "ses" and SES_AVAILABLE:
+                # Test SES configuration by getting send quota
+                try:
+                    loop = asyncio.get_event_loop()
+                    response = await loop.run_in_executor(
+                        None,
+                        self.ses_client.get_send_quota
+                    )
+                    logger.info(f"SES Send Quota: {response}")
+                    return True
+                except ClientError as e:
+                    logger.error(f"SES verification failed: {e}")
+                    return False
 
             elif self.provider == "smtp":
                 # Test SMTP connection
